@@ -15,21 +15,15 @@ export const updateQuality = (items: Item[]): Item[] => {
 	});
 };
 
-const getUpdatedItem = (prevItem: Item): Item => {
-	const item = { ...prevItem };
-
-	if (item.quality > 0) {
-		item.quality = item.quality - 1;
-	}
-
-	item.sellIn = item.sellIn - 1;
-
-	if (item.sellIn < 0) {
-		if (item.quality > 0) {
-			item.quality = item.quality - 1;
-		}
-	}
-	return item;
+const getUpdatedItem = (item: Item): Item => {
+	const name = item.name;
+	const sellIn = item.sellIn - 1;
+	const quality = sellIn < 0 ? item.quality - 2 : item.quality - 1;
+	return {
+		name,
+		sellIn,
+		quality: quality < 0 ? 0 : quality
+	};
 };
 
 const getUpdatedBackstagePass = (prevItem: Item): Item => {
