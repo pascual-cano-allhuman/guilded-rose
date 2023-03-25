@@ -1,13 +1,21 @@
 import { Item } from "./item";
 
 export const updateQuality = (items: Item[]): Item[] => {
-	return items.map(getUpdatedItem);
+	return items.map(item => {
+		switch (item.name) {
+			case "Sulfuras, Hand of Ragnaros":
+				return item;
+			case "Backstage passes to a TAFKAL80ETC concert":
+				return getUpdatedBackstagePass(item);
+			case "Aged Brie":
+				return getUpdatedAgedBrie(item);
+			default:
+				return getUpdatedItem(item);
+		}
+	});
 };
 
 const getUpdatedItem = (prevItem: Item): Item => {
-	if (prevItem.name === "Sulfuras, Hand of Ragnaros") return prevItem;
-	if (prevItem.name === "Backstage passes to a TAFKAL80ETC concert") return getUpdatedBackstagePass(prevItem);
-	if (prevItem.name === "Aged Brie") return getUpdatedAgedBrie(prevItem);
 	const item = { ...prevItem };
 
 	if (item.quality > 0) {
