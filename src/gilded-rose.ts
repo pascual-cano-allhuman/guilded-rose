@@ -1,29 +1,25 @@
 import { Item } from "./item";
 
+const _updateValue = (quality: number, value: number) => {
+	quality+=value;
+	return quality > 50 ? 50 : quality;
+};
+
 export const updateQuality = (prevItems: Item[]): Item[] => {
 	const items = [...prevItems];
 	items.forEach(item => {
 		switch (item.name) {
 			case "Aged Brie":
-				if (item.quality < 50) {
-					item.quality = item.quality + 1;
-				}
+				item.quality = _updateValue(item.quality, 1);
 				break;
 			case "Backstage passes to a TAFKAL80ETC concert":
-				if (item.quality < 50) {
-					item.quality = item.quality + 1;
-					if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
-						if (item.sellIn <= 10) {
-							if (item.quality < 50) {
-								item.quality = item.quality + 1;
-							}
-						}
-						if (item.sellIn <= 5) {
-							if (item.quality < 50) {
-								item.quality = item.quality + 1;
-							}
-						}
-					}
+				item.quality = _updateValue(item.quality, 1);
+
+				if (item.sellIn <= 10) {
+					item.quality = _updateValue(item.quality, 1);
+				}
+				if (item.sellIn <= 5) {
+					item.quality = _updateValue(item.quality, 1);
 				}
 				break;
 
