@@ -3,29 +3,35 @@ import { Item } from "./item";
 export const updateQuality = (prevItems: Item[]): Item[] => {
 	const items = [...prevItems];
 	items.forEach(item => {
-		if (item.name !== "Aged Brie" && item.name !== "Backstage passes to a TAFKAL80ETC concert") {
-			if (item.quality > 0) {
-				if (item.name !== "Sulfuras, Hand of Ragnaros") {
-					item.quality = item.quality - 1;
-				}
-			}
-		} else {
-			if (item.quality < 50) {
-				item.quality = item.quality + 1;
-				if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
-					if (item.sellIn < 11) {
-						if (item.quality < 50) {
-							item.quality = item.quality + 1;
+		switch (item.name) {
+			case "Aged Brie":	
+			case "Backstage passes to a TAFKAL80ETC concert":
+				if (item.quality < 50) {
+					item.quality = item.quality + 1;
+					if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
+						if (item.sellIn < 11) {
+							if (item.quality < 50) {
+								item.quality = item.quality + 1;
+							}
+						}
+						if (item.sellIn < 6) {
+							if (item.quality < 50) {
+								item.quality = item.quality + 1;
+							}
 						}
 					}
-					if (item.sellIn < 6) {
-						if (item.quality < 50) {
-							item.quality = item.quality + 1;
-						}
+				}	
+				break;
+
+			default:
+				if (item.quality > 0) {
+					if (item.name !== "Sulfuras, Hand of Ragnaros") {
+						item.quality = item.quality - 1;
 					}
-				}
-			}
+				}	
+				break;
 		}
+
 		if (item.name !== "Sulfuras, Hand of Ragnaros") {
 			item.sellIn = item.sellIn - 1;
 		}
