@@ -8,5 +8,6 @@ npm-debug.log
 build
 tests_build
 coverage
+.history
 
 .DS_Store
