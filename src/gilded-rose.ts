@@ -1,52 +1,64 @@
-import { Item } from "./item";
+import { Item, ITEMS_NAME } from "./item";
 
-export const updateQuality = (prevItems: Item[]): Item[] => {
-	const items = [...prevItems];
-	for (let i = 0; i < items.length; i++) {
-		if (items[i].name != "Aged Brie" && items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-			if (items[i].quality > 0) {
-				if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-					items[i].quality = items[i].quality - 1;
-				}
-			}
+
+export const updateQuality = (items: Item[]): Item[] => {
+	items.forEach(item => {
+		if (item.name != ITEMS_NAME.AGED_BRIE && item.name != ITEMS_NAME.BACKSTAGE) {
+			item = decreaseTheQuality(item);
 		} else {
-			if (items[i].quality < 50) {
-				items[i].quality = items[i].quality + 1;
-				if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-					if (items[i].sellIn < 11) {
-						if (items[i].quality < 50) {
-							items[i].quality = items[i].quality + 1;
-						}
-					}
-					if (items[i].sellIn < 6) {
-						if (items[i].quality < 50) {
-							items[i].quality = items[i].quality + 1;
-						}
-					}
-				}
-			}
+			item = increaseTheQuality(item);
 		}
-		if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-			items[i].sellIn = items[i].sellIn - 1;
+
+		if (item.name != ITEMS_NAME.SULFURAS) {
+			item.sellIn = item.sellIn - 1;
 		}
-		if (items[i].sellIn < 0) {
-			if (items[i].name != "Aged Brie") {
-				if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-					if (items[i].quality > 0) {
-						if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-							items[i].quality = items[i].quality - 1;
+		if (item.sellIn < 0) {
+			if (item.name != ITEMS_NAME.AGED_BRIE) {
+				if (item.name != ITEMS_NAME.BACKSTAGE) {
+					if (item.quality > 0) {
+						if (item.name != ITEMS_NAME.SULFURAS) {
+							item.quality = item.quality - 1;
 						}
 					}
 				} else {
-					items[i].quality = items[i].quality - items[i].quality;
+					item.quality = item.quality - item.quality;
 				}
 			} else {
-				if (items[i].quality < 50) {
-					items[i].quality = items[i].quality + 1;
+				if (item.quality < 50) {
+					item.quality = item.quality + 1;
+				}
+			}
+		}
+	});
+
+	return items;
+};
+
+const increaseTheQuality = (item: Item): Item => {
+	if (item.quality < 50) {
+		item.quality = item.quality + 1;
+		if (item.name == ITEMS_NAME.BACKSTAGE) {
+			if (item.sellIn < 11) {
+				if (item.quality < 50) {
+					item.quality = item.quality + 1;
+				}
+			}
+			if (item.sellIn < 6) {
+				if (item.quality < 50) {
+					item.quality = item.quality + 1;
 				}
 			}
 		}
 	}
 
-	return items;
-};
+	return item;
+}
+
+const decreaseTheQuality = (item: Item): Item => {
+	if (item.quality > 0) {
+		if (item.name != ITEMS_NAME.SULFURAS) {
+			item.quality = item.quality - 1;
+		}
+	}
+	return item;
+}
