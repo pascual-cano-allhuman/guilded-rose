@@ -20,36 +20,25 @@ export const updateQuality = (items: Item[]): Item[] => {
 	return items;
 };
 
-const increaseTheQuality = (item: Item): Item => {
+const increaseTheQuality = (item: Item) => {
 	if (item.quality < 50) {
 		item.quality = item.quality + 1;
-		if (item.name == ITEMS_NAME.BACKSTAGE) {
-			if (item.sellIn < 11) {
-				if (item.quality < 50) {
-					item.quality = item.quality + 1;
-				}
-			}
-			if (item.sellIn < 6) {
-				if (item.quality < 50) {
-					item.quality = item.quality + 1;
-				}
-			}
+		if (item.name == ITEMS_NAME.BACKSTAGE && item.sellIn < 11 && item.quality < 50) {
+			const increment = item.sellIn < 6 ? 2 : 1;
+			item.quality = item.quality + increment;
 		}
 	}
-
-	return item;
 };
 
-const decreaseTheQuality = (item: Item): Item => {
+const decreaseTheQuality = (item: Item) => {
 	if (item.quality > 0) {
 		if (item.name != ITEMS_NAME.SULFURAS) {
 			item.quality = item.quality - 1;
 		}
 	}
-	return item;
 };
 
-const calculateItemQualityForPassedDays = (item: Item): Item => {
+const calculateItemQualityForPassedDays = (item: Item) => {
 	if (item.name != ITEMS_NAME.AGED_BRIE) {
 		if (item.name != ITEMS_NAME.BACKSTAGE) {
 			if (item.quality > 0) {
@@ -65,5 +54,4 @@ const calculateItemQualityForPassedDays = (item: Item): Item => {
 			item.quality = item.quality + 1;
 		}
 	}
-	return item;
 };
