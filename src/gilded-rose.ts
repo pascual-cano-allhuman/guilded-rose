@@ -1,6 +1,7 @@
 import { Item } from "./item";
 
-const updateQualityForRegularItems = (item: Item) => {
+const updateQualityForRegularItems = (prevItem: Item) => {
+	const item = { ...prevItem };
 	if (item.quality > 0) {
 		item.quality = item.quality - 1;
 	}
@@ -11,9 +12,11 @@ const updateQualityForRegularItems = (item: Item) => {
 			item.quality = item.quality - 1;
 		}
 	}
+	return item;
 };
 
-const updateAgedBrie = (item: Item) => {
+const updateAgedBrie = (prevItem: Item) => {
+	const item = { ...prevItem };
 	if (item.quality < 50) {
 		item.quality = item.quality + 1;
 	}
@@ -24,9 +27,11 @@ const updateAgedBrie = (item: Item) => {
 			item.quality = item.quality + 1;
 		}
 	}
+	return item;
 };
 
-const updateQualityForBackstagePasses = (item: Item) => {
+const updateQualityForBackstagePasses = (prevItem: Item) => {
+	const item = { ...prevItem };
 	if (item.quality < 50) {
 		item.quality = item.quality + 1;
 		if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
@@ -47,21 +52,18 @@ const updateQualityForBackstagePasses = (item: Item) => {
 	if (item.sellIn < 0) {
 		item.quality = item.quality - item.quality;
 	}
+	return item;
 };
 
-export const updateQuality = (prevItems: Item[]): Item[] => {
-	const items = [...prevItems];
-
-	items.forEach(item => {
-		if (item.name === "Sulfuras, Hand of Ragnaros") return;
+export const updateQuality = (items: Item[]): Item[] => {
+	return items.map(item => {
+		if (item.name === "Sulfuras, Hand of Ragnaros") return item;
 		if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
-			updateQualityForRegularItems(item);
+			return updateQualityForRegularItems(item);
 		} else if (item.name === "Aged Brie") {
-			updateAgedBrie(item);
+			return updateAgedBrie(item);
 		} else {
-			updateQualityForBackstagePasses(item);
+			return updateQualityForBackstagePasses(item);
 		}
 	});
-
-	return items;
 };
